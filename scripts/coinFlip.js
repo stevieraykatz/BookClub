@@ -14,12 +14,24 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Faucet = await hre.ethers.getContractFactory("Faucet");
-  const faucet = await Faucet.deploy("Hello, Hardhat!");
+  const CoinFlip = await hre.ethers.getContractFactory("CoinFlip");
+  const coinFlip = await CoinFlip.deploy();
 
-  await faucet.deployed();
+  await coinFlip.deployed();
 
-  console.log("Faucet deployed to:", faucet.address);
+  console.log("CoinFlip deployed to:", coinFlip.address);
+
+  const BeatCoinFlip = await hre.ethers.getContractFactory("BeatCoinFlip");
+  const beatCoinFlip = await BeatCoinFlip.deploy(coinFlip.address);
+
+  await beatCoinFlip.deployed();
+
+  console.log("BeatCoinFlip deployed to:", beatCoinFlip.address);
+
+  for(let i =0; i< 10; i++) {
+    await beatCoinFlip.guessFlip();
+  }
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
